@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Clon Control - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card h3 {
+            color: #764ba2;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .endpoint-list {
+            list-style: none;
+        }
+
+        .endpoint-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .endpoint-list li:last-child {
+            border-bottom: none;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+
+        .method.get {
+            background: #81c784;
+            color: white;
+        }
+
+        .method.post {
+            background: #64b5f6;
+            color: white;
+        }
+
+        .method.put {
+            background: #ffb74d;
+            color: white;
+        }
+
+        .method.delete {
+            background: #e57373;
+            color: white;
+        }
+
+        .api-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .api-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .endpoint {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .endpoint-path {
+            font-family: monospace;
+            background: #333;
+            color: #0f0;
+            padding: 8px;
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .response {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        .success {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .feature {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature strong {
+            color: #667eea;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 5px 0 0;
+        }
+
+        .status-badge.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .status-badge.warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .status-badge.info {
+            background: #2196f3;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Clon Control</h1>
+            <p class="subtitle">Sistema de Gestión de Equipos Deportivos</p>
+            <div>
+                <span class="status-badge success">✅ Aplicación Operativa</span>
+                <span class="status-badge info">🚀 Production Ready</span>
+                <span class="status-badge success">✅ 150+ Tests Pasando</span>
+            </div>
+        </header>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">60</div>
+                <div class="stat-label">Archivos Java</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">26+</div>
+                <div class="stat-label">Endpoints REST</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6+</div>
+                <div class="stat-label">Patrones GOF</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Features -->
+            <div class="card">
+                <h2>✨ Características Principales</h2>
+                
+                <h3>🏗️ Arquitectura</h3>
+                <ul class="endpoint-list">
+                    <li>✅ SOLID Principles (5/5)</li>
+                    <li>✅ Layered Architecture</li>
+                    <li>✅ Repository Pattern</li>
+                    <li>✅ Dependency Injection</li>
+                </ul>
+
+                <h3>🧪 Testing</h3>
+                <ul class="endpoint-list">
+                    <li>✅ JUnit 5: 88+ tests</li>
+                    <li>✅ Mockito: 29+ tests</li>
+                    <li>✅ Patrones: 42+ tests</li>
+                    <li>✅ Coverage: Completo</li>
+                </ul>
+
+                <h3>💾 Persistencia</h3>
+                <ul class="endpoint-list">
+                    <li>✅ JPA/Hibernate</li>
+                    <li>✅ MySQL 8.0</li>
+                    <li>✅ Relaciones OneToMany</li>
+                    <li>✅ Transacciones ACID</li>
+                </ul>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="card">
+                <h2>🛠️ Stack Tecnológico</h2>
+                
+                <h3>Backend</h3>
+                <ul class="endpoint-list">
+                    <li>• Java 17 LTS</li>
+                    <li>• Spring Boot 3.x</li>
+                    <li>• Maven 3.8+</li>
+                    <li>• Jakarta Persistence</li>
+                </ul>
+
+                <h3>Database</h3>
+                <ul class="endpoint-list">
+                    <li>• MySQL 8.0</li>
+                    <li>• Hibernate ORM</li>
+                    <li>• 6 tablas relacionales</li>
+                    <li>• Índices optimizados</li>
+                </ul>
+
+                <h3>DevOps</h3>
+                <ul class="endpoint-list">
+                    <li>• Docker Container</li>
+                    <li>• Docker Compose</li>
+                    <li>• Health Checks</li>
+                    <li>• Volúmenes persistentes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- API Section -->
+        <div class="api-section">
+            <h2>📡 API REST - 26+ Endpoints Disponibles</h2>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab(event, 'jugadores')">👤 Jugadores</button>
+                <button class="tab" onclick="showTab(event, 'equipos')">⚽ Equipos</button>
+                <button class="tab" onclick="showTab(event, 'usuarios')">👥 Usuarios</button>
+                <button class="tab" onclick="showTab(event, 'mensajes')">💬 Mensajes</button>
+            </div>
+
+            <!-- Jugadores Tab -->
+            <div id="jugadores" class="tab-content active">
+                <h3>👤 Gestión de Jugadores</h3>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <strong>Obtener todos los jugadores</strong>
+                    <div class="endpoint-path">/api/jugadores</div>
+                    <button onclick="callAPI('GET', '/api/jugadores', '', 'jugadores-all')">Probar</button>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <strong>Crear nuevo jugador</strong>
+                    <div class="endpoint-path">/api/jugadores?nickname=Cristiano&rango=Elite</div>
+                    <input type="text" id="nickname" placeholder="nickname (ej: Cristiano)">
+                    <input type="text" id="rango" placeholder="rango (ej: Elite, Profesional, Basico)">
+                    <button onclick="crearJugador()">Crear Jugador</button>
+                </div>
+
+                <div id="jugadores-all" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Equipos Tab -->
+            <div id="equipos" class="tab-content">
+                <h3>⚽ Gestión de Equipos</h3>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <strong>Obtener todos los equipos</strong>
+                    <div class="endpoint-path">/api/equipos</div>
+                    <button onclick="callAPI('GET', '/api/equipos', '', 'equipos-all')">Probar</button>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <strong>Crear nuevo equipo</strong>
+                    <div class="endpoint-path">/api/equipos?nombre=Real%20Madrid</div>
+                    <input type="text" id="nombreEquipo" placeholder="nombre (ej: Real Madrid)">
+                    <button onclick="crearEquipo()">Crear Equipo</button>
+                </div>
+
+                <div id="equipos-all" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Usuarios Tab -->
+            <div id="usuarios" class="tab-content">
+                <h3>👥 Gestión de Usuarios</h3>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <strong>Obtener todos los usuarios</strong>
+                    <div class="endpoint-path">/api/usuarios</div>
+                    <button onclick="callAPI('GET', '/api/usuarios', '', 'usuarios-all')">Probar</button>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <strong>Crear nuevo usuario</strong>
+                    <div class="endpoint-path">/api/usuarios?nickname=admin&email=admin@test.com</div>
+                    <input type="text" id="nickUser" placeholder="nickname (ej: admin)">
+                    <input type="email" id="emailUser" placeholder="email (ej: admin@test.com)">
+                    <button onclick="crearUsuario()">Crear Usuario</button>
+                </div>
+
+                <div id="usuarios-all" class="response" style="display:none;"></div>
+            </div>
+
+            <!-- Mensajes Tab -->
+            <div id="mensajes" class="tab-content">
+                <h3>💬 Gestión de Mensajes</h3>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <strong>Obtener todos los mensajes</strong>
+                    <div class="endpoint-path">/api/mensajes</div>
+                    <button onclick="callAPI('GET', '/api/mensajes', '', 'mensajes-all')">Probar</button>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <strong>Crear nuevo mensaje</strong>
+                    <div class="endpoint-path">/api/mensajes?contenido=Hola%20mundo</div>
+                    <textarea id="contenidoMsg" placeholder="contenido del mensaje" rows="3"></textarea>
+                    <button onclick="crearMensaje()">Crear Mensaje</button>
+                </div>
+
+                <div id="mensajes-all" class="response" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Patterns Section -->
+        <div class="api-section">
+            <h2>🎯 Patrones de Diseño Implementados</h2>
+            
+            <div class="features">
+                <div class="feature">
+                    <strong>🏭 Factory</strong><br>
+                    Creación centralizada
+                </div>
+                <div class="feature">
+                    <strong>🔨 Builder</strong><br>
+                    Construcción fluida
+                </div>
+                <div class="feature">
+                    <strong>📋 Strategy</strong><br>
+                    Múltiples formatos
+                </div>
+                <div class="feature">
+                    <strong>👁️ Observer</strong><br>
+                    Notificaciones
+                </div>
+                <div class="feature">
+                    <strong>🗂️ Repository</strong><br>
+                    Acceso a datos
+                </div>
+                <div class="feature">
+                    <strong>1️⃣ Singleton</strong><br>
+                    Instancia única
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Links -->
+        <div class="api-section">
+            <h2>📚 Documentación</h2>
+            
+            <div class="features">
+                <div class="feature">
+                    <strong>📖 README.md</strong><br>
+                    Ver documentación completa
+                </div>
+                <div class="feature">
+                    <strong>🚀 QUICK_START.md</strong><br>
+                    Inicio rápido (30 seg)
+                </div>
+                <div class="feature">
+                    <strong>🐳 DOCKER_SETUP.md</strong><br>
+                    Configuración Docker
+                </div>
+                <div class="feature">
+                    <strong>📊 RESUMEN_FINAL.md</strong><br>
+                    Resumen del proyecto
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🎯 Clon Control v1.0.0 | Construido con ❤️ por Eze Ocaranza</p>
+            <p>150+ Tests | 26+ Endpoints | Production Ready | Docker Enabled</p>
+            <p>Última actualización: 12 de Febrero de 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080';
+
+        function showTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        async function callAPI(method, endpoint, data, responseId) {
+            const responseDiv = document.getElementById(responseId);
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = '⏳ Cargando...';
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                };
+
+                if (data && method !== 'GET') {
+                    options.body = data;
+                }
+
+                const response = await fetch(API_URL + endpoint, options);
+                const responseData = await response.json();
+
+                responseDiv.classList.remove('error');
+                responseDiv.classList.add('success');
+                responseDiv.innerHTML = '<strong>✅ Response:</strong><br>' + JSON.stringify(responseData, null, 2);
+            } catch (error) {
+                responseDiv.classList.remove('success');
+                responseDiv.classList.add('error');
+                responseDiv.innerHTML = '<strong>❌ Error:</strong><br>' + error.message + 
+                    '<br><br><em>Nota: La API debe estar corriendo en http://localhost:8080</em>';
+            }
+        }
+
+        function crearJugador() {
+            const nickname = document.getElementById('nickname').value;
+            const rango = document.getElementById('rango').value;
+
+            if (!nickname || !rango) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const url = `${API_URL}/api/jugadores?nickname=${nickname}&rango=${rango}`;
+            fetch(url, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    document.getElementById('jugadores-all').innerHTML = 
+                        '<strong>✅ Jugador creado:</strong><br>' + JSON.stringify(d, null, 2);
+                    document.getElementById('jugadores-all').style.display = 'block';
+                })
+                .catch(e => alert('Error: ' + e.message));
+        }
+
+        function crearEquipo() {
+            const nombre = document.getElementById('nombreEquipo').value;
+
+            if (!nombre) {
+                alert('Por favor completa el nombre del equipo');
+                return;
+            }
+
+            const url = `${API_URL}/api/equipos?nombre=${nombre}`;
+            fetch(url, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    document.getElementById('equipos-all').innerHTML = 
+                        '<strong>✅ Equipo creado:</strong><br>' + JSON.stringify(d, null, 2);
+                    document.getElementById('equipos-all').style.display = 'block';
+                })
+                .catch(e => alert('Error: ' + e.message));
+        }
+
+        function crearUsuario() {
+            const nickname = document.getElementById('nickUser').value;
+            const email = document.getElementById('emailUser').value;
+
+            if (!nickname || !email) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const url = `${API_URL}/api/usuarios?nickname=${nickname}&email=${email}`;
+            fetch(url, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    document.getElementById('usuarios-all').innerHTML = 
+                        '<strong>✅ Usuario creado:</strong><br>' + JSON.stringify(d, null, 2);
+                    document.getElementById('usuarios-all').style.display = 'block';
+                })
+                .catch(e => alert('Error: ' + e.message));
+        }
+
+        function crearMensaje() {
+            const contenido = document.getElementById('contenidoMsg').value;
+
+            if (!contenido) {
+                alert('Por favor escribe un mensaje');
+                return;
+            }
+
+            const url = `${API_URL}/api/mensajes?contenido=${encodeURIComponent(contenido)}`;
+            fetch(url, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    document.getElementById('mensajes-all').innerHTML = 
+                        '<strong>✅ Mensaje creado:</strong><br>' + JSON.stringify(d, null, 2);
+                    document.getElementById('mensajes-all').style.display = 'block';
+                })
+                .catch(e => alert('Error: ' + e.message));
+        }
+
+        // Initial load - check API status
+        window.onload = function() {
+            fetch(API_URL + '/api/jugadores')
+                .then(() => {
+                    console.log('✅ API conectada');
+                })
+                .catch(() => {
+                    console.log('⚠️ API no disponible - inicia Docker Compose');
+                });
+        };
+    </script>
+</body>
+</html>
