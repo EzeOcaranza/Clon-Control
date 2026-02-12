@@ -1,5 +1,7 @@
 package Ejercicio1;
 
+import Ejercicio1.exceptions.JugadorException;
+
 /**
  * Clase que representa un jugador en el sistema.
  * Contiene información sobre el nickname y rango del jugador.
@@ -12,14 +14,14 @@ public class Jugador {
 	 * Constructor de Jugador con validación.
 	 * @param nickname nombre único del jugador
 	 * @param rango nivel o categoría del jugador
-	 * @throws IllegalArgumentException si nickname o rango son null o vacíos
+	 * @throws JugadorException si nickname o rango son null o vacíos
 	 */
 	public Jugador(String nickname, String rango) {
 		if (nickname == null || nickname.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nickname no puede estar vacío");
+			throw new JugadorException("El nickname no puede estar vacío");
 		}
 		if (rango == null || rango.trim().isEmpty()) {
-			throw new IllegalArgumentException("El rango no puede estar vacío");
+			throw new JugadorException("El rango no puede estar vacío");
 		}
 		this.nickname = nickname;
 		this.rango = rango;
@@ -36,11 +38,11 @@ public class Jugador {
 	/**
 	 * Establece el nickname del jugador.
 	 * @param nickname el nuevo nickname
-	 * @throws IllegalArgumentException si nickname es null o vacío
+	 * @throws JugadorException si nickname es null o vacío
 	 */
 	public void setNickname(String nickname) {
 		if (nickname == null || nickname.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nickname no puede estar vacío");
+			throw new JugadorException("El nickname no puede estar vacío");
 		}
 		this.nickname = nickname;
 	}
@@ -56,11 +58,11 @@ public class Jugador {
 	/**
 	 * Establece el rango del jugador.
 	 * @param rango el nuevo rango
-	 * @throws IllegalArgumentException si rango es null o vacío
+	 * @throws JugadorException si rango es null o vacío
 	 */
 	public void setRango(String rango) {
 		if (rango == null || rango.trim().isEmpty()) {
-			throw new IllegalArgumentException("El rango no puede estar vacío");
+			throw new JugadorException("El rango no puede estar vacío");
 		}
 		this.rango = rango;
 	}

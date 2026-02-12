@@ -3,6 +3,7 @@ package Ejercicio2;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Collections;
+import Ejercicio2.exceptions.MensajeException;
 
 /**
  * Clase que representa un mensaje en el sistema.
@@ -22,17 +23,17 @@ public class Mensaje {
 	 * @param autor autor del mensaje
 	 * @param etiquetas etiquetas asociadas
 	 * @param imagen ruta de la imagen (puede ser null)
-	 * @throws IllegalArgumentException si parámetros obligatorios son null o vacíos
+	 * @throws MensajeException si parámetros obligatorios son null o vacíos
 	 */
 	public Mensaje(String texto, String fechaPublicacion, String autor, String etiquetas, String imagen) {
 		if (texto == null || texto.trim().isEmpty()) {
-			throw new IllegalArgumentException("El texto del mensaje no puede estar vacío");
+			throw new MensajeException("El texto del mensaje no puede estar vacío");
 		}
 		if (fechaPublicacion == null || fechaPublicacion.trim().isEmpty()) {
-			throw new IllegalArgumentException("La fecha de publicación no puede estar vacía");
+			throw new MensajeException("La fecha de publicación no puede estar vacía");
 		}
 		if (autor == null || autor.trim().isEmpty()) {
-			throw new IllegalArgumentException("El autor no puede estar vacío");
+			throw new MensajeException("El autor no puede estar vacío");
 		}
 		
 		this.texto = texto;
@@ -58,11 +59,11 @@ public class Mensaje {
 	/**
 	 * Establece el texto del mensaje.
 	 * @param texto el nuevo texto
-	 * @throws IllegalArgumentException si texto es null o vacío
+	 * @throws MensajeException si texto es null o vacío
 	 */
 	public void setTexto(String texto) {
 		if (texto == null || texto.trim().isEmpty()) {
-			throw new IllegalArgumentException("El texto del mensaje no puede estar vacío");
+			throw new MensajeException("El texto del mensaje no puede estar vacío");
 		}
 		this.texto = texto;
 	}
@@ -81,7 +82,7 @@ public class Mensaje {
 	 */
 	public void setFechaPublicacion(String fechaPublicacion) {
 		if (fechaPublicacion == null || fechaPublicacion.trim().isEmpty()) {
-			throw new IllegalArgumentException("La fecha no puede estar vacía");
+			throw new MensajeException("La fecha no puede estar vacía");
 		}
 		this.fechaPublicacion = fechaPublicacion;
 	}
@@ -100,7 +101,7 @@ public class Mensaje {
 	 */
 	public void setAutor(String autor) {
 		if (autor == null || autor.trim().isEmpty()) {
-			throw new IllegalArgumentException("El autor no puede estar vacío");
+			throw new MensajeException("El autor no puede estar vacío");
 		}
 		this.autor = autor;
 	}
@@ -116,11 +117,11 @@ public class Mensaje {
 	/**
 	 * Agrega una etiqueta al mensaje.
 	 * @param etiqueta la etiqueta a agregar
-	 * @throws IllegalArgumentException si etiqueta es null o vacía
+	 * @throws MensajeException si etiqueta es null o vacía
 	 */
 	public void agregarEtiqueta(String etiqueta) {
 		if (etiqueta == null || etiqueta.trim().isEmpty()) {
-			throw new IllegalArgumentException("La etiqueta no puede estar vacía");
+			throw new MensajeException("La etiqueta no puede estar vacía");
 		}
 		etiquetas.add(etiqueta.trim());
 	}

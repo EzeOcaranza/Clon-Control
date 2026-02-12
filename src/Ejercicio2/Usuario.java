@@ -3,12 +3,14 @@ package Ejercicio2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+import Ejercicio2.exceptions.UsuarioException;
 
 /**
  * Clase que representa un usuario del sistema.
  * Gestiona la información del usuario y sus mensajes publicados.
+ * Implementa segregación de interfaz para lectores y escritores.
  */
-public class Usuario {
+public class Usuario implements IUsuarioLector, IUsuarioEscritor {
 	private String nombre;
 	private String apellidos;
 	private String fechaNacimiento;
@@ -21,17 +23,17 @@ public class Usuario {
 	 * @param apellidos apellidos del usuario
 	 * @param fechaNacimiento fecha de nacimiento
 	 * @param nickName nombre único del usuario
-	 * @throws IllegalArgumentException si algún parámetro es null o vacío
+	 * @throws UsuarioException si algún parámetro es null o vacío
 	 */
 	public Usuario(String nombre, String apellidos, String fechaNacimiento, String nickName) {
 		if (nombre == null || nombre.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nombre no puede estar vacío");
+			throw new UsuarioException("El nombre no puede estar vacío");
 		}
 		if (apellidos == null || apellidos.trim().isEmpty()) {
-			throw new IllegalArgumentException("Los apellidos no pueden estar vacíos");
+			throw new UsuarioException("Los apellidos no pueden estar vacíos");
 		}
 		if (nickName == null || nickName.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nickName no puede estar vacío");
+			throw new UsuarioException("El nickName no puede estar vacío");
 		}
 		
 		this.nombre = nombre;
@@ -45,6 +47,7 @@ public class Usuario {
 	 * Obtiene el nombre del usuario.
 	 * @return el nombre
 	 */
+	@Override
 	public String getNombre() {
 		return nombre;
 	}
@@ -53,9 +56,10 @@ public class Usuario {
 	 * Establece el nombre del usuario.
 	 * @param nombre el nuevo nombre
 	 */
+	@Override
 	public void setNombre(String nombre) {
 		if (nombre == null || nombre.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nombre no puede estar vacío");
+			throw new UsuarioException("El nombre no puede estar vacío");
 		}
 		this.nombre = nombre;
 	}
@@ -64,6 +68,7 @@ public class Usuario {
 	 * Obtiene los apellidos del usuario.
 	 * @return los apellidos
 	 */
+	@Override
 	public String getApellidos() {
 		return apellidos;
 	}
@@ -72,9 +77,10 @@ public class Usuario {
 	 * Establece los apellidos del usuario.
 	 * @param apellidos los nuevos apellidos
 	 */
+	@Override
 	public void setApellidos(String apellidos) {
 		if (apellidos == null || apellidos.trim().isEmpty()) {
-			throw new IllegalArgumentException("Los apellidos no pueden estar vacíos");
+			throw new UsuarioException("Los apellidos no pueden estar vacíos");
 		}
 		this.apellidos = apellidos;
 	}
@@ -83,6 +89,7 @@ public class Usuario {
 	 * Obtiene la fecha de nacimiento del usuario.
 	 * @return la fecha de nacimiento
 	 */
+	@Override
 	public String getFechaNacimiento() {
 		return fechaNacimiento;
 	}
@@ -91,6 +98,7 @@ public class Usuario {
 	 * Establece la fecha de nacimiento del usuario.
 	 * @param fechaNacimiento la nueva fecha
 	 */
+	@Override
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -99,6 +107,7 @@ public class Usuario {
 	 * Obtiene el nickName del usuario.
 	 * @return el nickName
 	 */
+	@Override
 	public String getNickName() {
 		return nickName;
 	}
@@ -107,9 +116,10 @@ public class Usuario {
 	 * Establece el nickName del usuario.
 	 * @param nickName el nuevo nickName
 	 */
+	@Override
 	public void setNickName(String nickName) {
 		if (nickName == null || nickName.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nickName no puede estar vacío");
+			throw new UsuarioException("El nickName no puede estar vacío");
 		}
 		this.nickName = nickName;
 	}
@@ -118,6 +128,7 @@ public class Usuario {
 	 * Obtiene la lista inmutable de mensajes del usuario.
 	 * @return lista de mensajes
 	 */
+	@Override
 	public List<Mensaje> getMensajes() {
 		return Collections.unmodifiableList(mensajes);
 	}
@@ -125,11 +136,12 @@ public class Usuario {
 	/**
 	 * Publica un nuevo mensaje.
 	 * @param mensaje el mensaje a publicar
-	 * @throws IllegalArgumentException si mensaje es null
+	 * @throws UsuarioException si mensaje es null
 	 */
+	@Override
 	public void publicarMensaje(Mensaje mensaje) {
 		if (mensaje == null) {
-			throw new IllegalArgumentException("El mensaje no puede ser null");
+			throw new UsuarioException("El mensaje no puede ser null");
 		}
 		mensajes.add(mensaje);
 	}
@@ -139,6 +151,7 @@ public class Usuario {
 	 * @param mensaje el mensaje a eliminar
 	 * @return true si se eliminó, false en caso contrario
 	 */
+	@Override
 	public boolean eliminarMensaje(Mensaje mensaje) {
 		return mensajes.remove(mensaje);
 	}
@@ -147,6 +160,7 @@ public class Usuario {
 	 * Obtiene la cantidad de mensajes publicados.
 	 * @return cantidad de mensajes
 	 */
+	@Override
 	public int getCantidadMensajes() {
 		return mensajes.size();
 	}
