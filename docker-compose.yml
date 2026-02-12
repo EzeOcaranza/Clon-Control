@@ -3,7 +3,7 @@ version: '3.9'
 services:
   # Servicio de Base de Datos MySQL
   db:
-    image: mysql:8.0-alpine
+    image: mysql:latest
     container_name: clon_control_db
     environment:
       MYSQL_ROOT_PASSWORD: root
