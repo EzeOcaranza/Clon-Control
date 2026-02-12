@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  # Servicio de Base de Datos MySQL
+  db:
+    image: mysql:8.0-alpine
+    container_name: clon_control_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: clon_control
+      MYSQL_USER: clon_user
+      MYSQL_PASSWORD: clon_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - clon_control_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Servicio de Aplicación
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clon_control_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: jdbc:mysql://db:3306/clon_control
+      DATABASE_USER: clon_user
+      DATABASE_PASSWORD: clon_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    networks:
+      - clon_control_network
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  clon_control_network:
+    driver: bridge

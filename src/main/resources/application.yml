@@ -1,0 +1,51 @@
+# ========================================
+# Spring Boot Application Configuration
+# ========================================
+
+# Server Configuration
+server.port=8080
+server.servlet.context-path=/
+server.compression.enabled=true
+
+# ========================================
+# Database Configuration (JPA/Hibernate)
+# ========================================
+
+# MySQL Connection
+spring.datasource.url=${DATABASE_URL:jdbc:mysql://localhost:3306/clon_control}
+spring.datasource.username=${DATABASE_USER:root}
+spring.datasource.password=${DATABASE_PASSWORD:root}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Hibernate JPA Configuration
+spring.jpa.hibernate.ddl-auto=${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+spring.jpa.properties.hibernate.jdbc.batch_size=20
+spring.jpa.properties.hibernate.order_inserts=true
+spring.jpa.properties.hibernate.order_updates=true
+
+# ========================================
+# Application Logging
+# ========================================
+logging.level.root=INFO
+logging.level.com.clon_control=DEBUG
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=WARN
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.file.name=logs/clon-control.log
+
+# ========================================
+# Jackson Configuration (JSON)
+# ========================================
+spring.jackson.serialization.write-dates-as-timestamps=false
+spring.jackson.time-zone=UTC
+spring.jackson.default-property-inclusion=non_null
+
+# ========================================
+# Actuator Configuration
+# ========================================
+management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=always
